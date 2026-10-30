@@ -1,0 +1,207 @@
+/*
+ * Vue Mémo du Panel, à l'identité de la vue Audience de Moniter :
+ * crème, blocs blancs sans filet, barres d'encre de 45px qui parlent en minuscules, coins carrés.
+ * Clair / sombre : light-dark() suit le `color-scheme` du Panel.
+ */
+
+.k-memo-view {
+  --m-cream: #faf5ef;
+  --m-ink: #1a1a1a;
+  --m-blue: #3264f9;
+
+  --m-bg: light-dark(var(--m-cream), var(--m-ink));
+  --m-text: light-dark(var(--m-ink), var(--m-cream));
+  --m-surface: light-dark(#fff, #262524);
+  --m-bar-bg: light-dark(var(--m-ink), var(--m-cream));
+  --m-bar-text: light-dark(var(--m-cream), var(--m-ink));
+  /* Le bleu tombe trop bas sur le bloc sombre : éclairci quand il sert de texte */
+  --m-accent: light-dark(var(--m-blue), color-mix(in srgb, var(--m-blue) 75%, var(--m-cream)));
+  --m-muted: color-mix(in srgb, var(--m-text) 58%, var(--m-surface));
+  --m-code: color-mix(in srgb, var(--m-text) 7%, var(--m-surface));
+  --m-row: 45px;
+  --m-gutter: 15px;
+  --m-sans: 'KMR Waldenburg', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --m-mono: ui-monospace, Consolas, monospace;
+}
+
+.k-memo-view .k-panel-main {
+  background: var(--m-bg);
+}
+
+.k-memo {
+  display: grid;
+  gap: var(--m-gutter);
+  font-family: var(--m-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--m-text);
+}
+.k-memo *,
+.k-memo *::before,
+.k-memo *::after {
+  border-radius: 0;
+}
+.k-memo :focus,
+.k-memo :focus-visible {
+  outline: none;
+}
+
+/* ── Barre d'encre ──────────────────────────────── */
+.k-memo-ink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  min-height: var(--m-row);
+  padding: 0 var(--m-gutter);
+  background: var(--m-bar-bg);
+  color: var(--m-bar-text);
+  text-transform: lowercase;
+}
+.k-memo-ink h1 {
+  font-size: inherit;
+  font-weight: 400;
+}
+.k-memo-ink code {
+  font-family: inherit;
+  color: color-mix(in srgb, var(--m-bar-text) 60%, var(--m-bar-bg));
+  text-transform: none;
+}
+
+/* ── Blocs ──────────────────────────────────────── */
+.k-memo-block {
+  min-width: 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--m-surface);
+}
+.k-memo-message {
+  padding: 3rem 1.5rem;
+  color: var(--m-muted);
+  text-align: center;
+}
+
+/* ── Markdown rendu ─────────────────────────────── */
+.k-memo-text > * {
+  max-width: 48rem;
+}
+.k-memo-text > * + * {
+  margin-top: 0.75rem;
+}
+.k-memo-text h1,
+.k-memo-text h2,
+.k-memo-text h3,
+.k-memo-text h4,
+.k-memo-text h5,
+.k-memo-text h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+.k-memo-text h1 {
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.k-memo-text h2 {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+.k-memo-text h3 {
+  color: var(--m-muted);
+  text-transform: lowercase;
+}
+.k-memo-text * + h2,
+.k-memo-text * + h3,
+.k-memo-text * + h4 {
+  margin-top: 1.5rem;
+}
+.k-memo-text h4,
+.k-memo-text strong,
+.k-memo-text b {
+  font-weight: 600;
+}
+.k-memo-text em,
+.k-memo-text i {
+  font-style: italic;
+}
+.k-memo-text a {
+  color: var(--m-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.k-memo-text ul,
+.k-memo-text ol {
+  padding-left: 1.25rem;
+}
+.k-memo-text ul {
+  list-style: disc;
+}
+.k-memo-text ol {
+  list-style: decimal;
+}
+.k-memo-text li + li,
+.k-memo-text li > ul,
+.k-memo-text li > ol {
+  margin-top: 0.25rem;
+}
+.k-memo-text blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid var(--m-text);
+  color: var(--m-muted);
+}
+.k-memo-text hr {
+  height: 0;
+  margin-block: 1.5rem;
+  border: 0;
+  border-top: 1px solid var(--m-code);
+}
+.k-memo-text code {
+  /* Reste d'un seul tenant : `--measure` ne se coupe pas après ses tirets */
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.1em 0.3em;
+  background: var(--m-code);
+  font-family: var(--m-mono);
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+}
+.k-memo-text pre {
+  padding: 0.75rem 1rem;
+  background: var(--m-code);
+  overflow-x: auto;
+}
+.k-memo-text pre code {
+  padding: 0;
+  background: none;
+  line-height: 1.5;
+  overflow-wrap: normal;
+}
+.k-memo-text table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.k-memo-text th,
+.k-memo-text td {
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  border-bottom: 1px solid var(--m-code);
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+}
+.k-memo-text th {
+  color: var(--m-muted);
+  text-transform: lowercase;
+}
+
+/*
+ * Menu : Kirby pousse le groupe du bas avec un margin-bottom:auto sur l'avant-dernier groupe.
+ * Quand le site termine `panel.menu` par '-', 'memo', cet avant-dernier groupe est le mémo :
+ * la marge passe au groupe d'avant, et le mémo vient se coller juste au-dessus de « Modifications ».
+ */
+.k-panel-menu-buttons:has(+ .k-panel-menu-buttons[data-second-last="true"] > :is(a[href="memo"], a[href$="/memo"])) {
+  margin-bottom: auto;
+}
+.k-panel-menu-buttons[data-second-last="true"]:has(> :is(a[href="memo"], a[href$="/memo"])) {
+  /* Annule le gap de .k-panel-menu-body */
+  margin-bottom: calc(-1 * var(--spacing-4));
+}
